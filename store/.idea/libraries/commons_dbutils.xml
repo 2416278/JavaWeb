@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="commons-dbutils">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../apache-maven-3.8.8/repository/commons-dbutils" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
