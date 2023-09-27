@@ -34,7 +34,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>添加数据</h5>
+                    <h5>修改数据</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -69,17 +69,7 @@
                                 <input id="password" name="password" value="${entity.password}" class="form-control" type="text">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">角色</label>
-                            <div class="col-sm-8">
-                                <select id="notes" name="notes" class="form-control" required="" type="text" >
-                                    <option value="超级管理员">超级管理员</option>
-                                    <option value="金牌客户">金牌客户</option>
-                                    <option value="银牌客户">银牌客户</option>
-                                    <option value="铜牌客户">铜牌客户</option>
-                                </select>
-                            </div>
-                        </div>
+
                         <c:if test="${not empty entity }">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">分配菜单</label>
@@ -105,12 +95,7 @@
                                 </div>
                             </div>
                         </c:if>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">创建日期</label>
-                            <div class="col-sm-8">
-                                <input type="date" id="createTime" value="${entity.createTime}" name="createTime" required="" value-format="yyyy-MM-dd" class="form-control">
-                            </div>
-                        </div>
+
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-3">
                                 <button class="btn btn-primary" type="submit">提交</button>

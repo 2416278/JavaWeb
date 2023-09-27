@@ -69,12 +69,11 @@ public class MenuServlet extends BaseServlet{
         if(StringUtils.isNotEmpty(id)){
 // 更新
             menu.setId(Integer.parseInt(id));
-            service.updateById(menu);
+            service.update(menu);
         }else{
 // 添加
             service.save(menu);
             //保存分配的菜单信息 获取id
-
         }
         resp.sendRedirect("/sys/menuServlet?action=list");
     }
@@ -117,13 +116,4 @@ public class MenuServlet extends BaseServlet{
 
     }
 
-    @Override
-    public void findByName(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
-
-    @Override
-    public void check(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
 }

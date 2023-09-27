@@ -17,7 +17,7 @@ public interface IGoodsDao {
 
     public SysGoods findById(int id);
 
-    public int updateById(SysGoods entity);
+    public int update(SysGoods entity);
 
     int deleteById(int id);
 
@@ -28,4 +28,6 @@ public interface IGoodsDao {
     List<SysGoods> listByTypeId(SysGoods good);
 
     void updateAmountByName(Integer amount, String name);
+
+    void updateNew(SysGoods good);
 }

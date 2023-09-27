@@ -41,6 +41,9 @@ public class IRoleDaoImpl implements IRoleDao {
                         entity.setNotes(resultSet.getString("notes"));
                         entity.setPassword(resultSet.getString("password"));
                         entity.setCreateTime(resultSet.getDate("time"));
+                        entity.setLoginErrorCount(resultSet.getInt("login_error_count"));
+                        entity.setLateLoginErrorTime(resultSet.getDate("last_login_error_time"));
+                        entity.setIsLocked(resultSet.getInt("isLocked"));
                         list.add(entity);
                     }
                     return list;
@@ -82,6 +85,9 @@ public class IRoleDaoImpl implements IRoleDao {
                         entity.setNotes(resultSet.getString("notes"));
                         entity.setPassword(resultSet.getString("password"));
                         entity.setCreateTime(resultSet.getDate("time"));
+                        entity.setLoginErrorCount(resultSet.getInt("login_error_count"));
+                        entity.setLateLoginErrorTime(resultSet.getDate("last_login_error_time"));
+                        entity.setIsLocked(resultSet.getInt("isLocked"));
                         list.add(entity);
                     }
                     return list;
@@ -133,6 +139,10 @@ public class IRoleDaoImpl implements IRoleDao {
                             entity.setPassword("********");
                         }
                         entity.setCreateTime(resultSet.getDate("time"));
+
+                        entity.setLoginErrorCount(resultSet.getInt("login_error_count"));
+                        entity.setLateLoginErrorTime(resultSet.getDate("last_login_error_time"));
+                        entity.setIsLocked(resultSet.getInt("isLocked"));
                         return entity;
                     }
                     return null;
@@ -167,6 +177,10 @@ public class IRoleDaoImpl implements IRoleDao {
                         entity.setNotes(resultSet.getString("notes"));
                         entity.setPassword(resultSet.getString("password"));
                         entity.setCreateTime(resultSet.getDate("time"));
+
+                        entity.setLoginErrorCount(resultSet.getInt("login_error_count"));
+                        entity.setLateLoginErrorTime(resultSet.getDate("last_login_error_time"));
+                        entity.setIsLocked(resultSet.getInt("isLocked"));
                        list.add(entity);
                     }
                     return list;
@@ -342,11 +356,11 @@ public class IRoleDaoImpl implements IRoleDao {
     }
 
     @Override
-    public void addCount(SysRole sysRole) {
+    public void addCount(String name) {
         QueryRunner queryRunner = MyDbUtils.getQueryRunner(); // queryRunner对象
-        String sql = "update sys_role set login_error_count = login_error_count + 1 where name = ?";
+        String sql = "update sys_role set login_error_count = COALESCE(login_error_count, 0) + ? where name = ?";
         try {
-            queryRunner.update(sql, sysRole.getName());
+            queryRunner.update(sql, 1, name);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -393,6 +407,18 @@ public class IRoleDaoImpl implements IRoleDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    @Override
+    public void deleteByNmae(String name) {
+        QueryRunner queryRunner= MyDbUtils.getQueryRunner();
+        String sql="delete from sys_role where name=?";
+        try {
+            queryRunner.update(sql,name);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
     }
 
 

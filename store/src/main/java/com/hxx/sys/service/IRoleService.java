@@ -38,11 +38,13 @@ public interface IRoleService {
 
     public String checkUserName(String userName);
 
-    public void addCount(SysRole sysRole);
+    public void addCount(String name);
 
     public void delCount(SysRole sysRole);
 
     void lock(SysRole sysRole);
 
     void unLock(SysRole sysRole);
+
+    void deleteByName(String name);
 }

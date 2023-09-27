@@ -20,8 +20,8 @@ public interface IUserDao {
 
     public SysUser findByName(String usename);
 
-    public int updateById(SysUser entity);
-    
+    public int update(SysUser entity);
+
     int deleteById(int id);
 
     int count(PageUtils pageUtils);

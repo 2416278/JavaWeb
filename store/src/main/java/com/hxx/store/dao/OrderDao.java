@@ -27,6 +27,5 @@ public interface OrderDao {
 
     int deleteById(int id);
 
-
     Order findByName(String name);
 }

@@ -224,14 +224,15 @@
                 let name = preElement.nextElementSibling.innerHTML;
                 // 调用保存到订单数据库中
                 $.get("/store/orderServlet?action=saveByName&name=" + name);
-                //修改是否购买状态,
-                $.get("/store/cartServlet?action=saveStateByName&name="+name);
             }
         })
         _sumTotal.innerHTML = sumTotal
     }
     function pay() {
-        window.location.href="/pay.jsp";
+        var sumTotal = parseFloat(document.querySelector('.sumTotal').textContent);
+        if (sumTotal > 0) {
+            window.location.href = "/pay.jsp";
+        }
     }
 </script>
 <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>

@@ -61,7 +61,6 @@
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-3">
                                 <button class="btn btn-success demo2" id="sumbitBtn" type="button" >提交</button>
-                                <button class="btn btn-default" onclick="resetPage()" type="button">取消</button>
                             </div>
                         </div>
                     </form>

@@ -30,8 +30,8 @@ public class IMenuServiceImpl implements IMenuService {
     }
 
     @Override
-    public int updateById(SysMenu entity) {
-        return dao.updateById(entity);
+    public int update(SysMenu entity) {
+        return dao.update(entity);
     }
 
     @Override

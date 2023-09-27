@@ -100,9 +100,9 @@ public class IGoodsDaoImpl implements IGoodsDao {
     @Override
     public int save(SysGoods entity) {
         QueryRunner queryRunner=MyDbUtils.getQueryRunner();//连接池queryRunner对象
-        String sql="insert into sys_goods(name,make,maketime,img,size,buyprice,sellprice,count)values(?,?,?,?,?,?,?,?)";
+        String sql="insert into sys_goods(name,make,maketime,img,size,buyprice,sellprice,count,type_id)values(?,?,?,?,?,?,?,?,?)";
         try {
-            return queryRunner.update(sql,entity.getName(),entity.getMake(),entity.getMaketime(),entity.getImg(),entity.getSize(),entity.getBuyprice(),entity.getSellprice(),entity.getCount());
+            return queryRunner.update(sql,entity.getName(),entity.getMake(),entity.getMaketime(),entity.getImg(),entity.getSize(),entity.getBuyprice(),entity.getSellprice(),entity.getCount(),entity.getTypeId());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -146,15 +146,25 @@ public class IGoodsDaoImpl implements IGoodsDao {
     }
 
     @Override
-    public int updateById(SysGoods entity) {
+    public int update(SysGoods entity) {
         QueryRunner queryRunner=MyDbUtils.getQueryRunner();//连接池queryRunner对象
-        String sql="update sys_goods set name=?,make=?,makeTime=?,img=?,size=?,buyprice=?,sellprice=?,count=? where id=?";
+        String sql="update sys_goods set name=?,make=?,makeTime=?,img=?,size=?,buyprice=?,sellprice=?,count=?,type_id=? where id=?";
         try {
-            return queryRunner.update(sql,entity.getName(),entity.getMake(),entity.getMaketime(),entity.getImg(),entity.getSize(),entity.getBuyprice(),entity.getSellprice(),entity.getCount(),entity.getId());
+            return queryRunner.update(sql,entity.getName(),entity.getMake(),entity.getMaketime(),entity.getImg(),entity.getSize(),entity.getBuyprice(),entity.getSellprice(),entity.getCount(),entity.getTypeId(),entity.getId());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return 0;
+    }
+    @Override
+    public void updateNew(SysGoods entity) {
+        QueryRunner queryRunner=MyDbUtils.getQueryRunner();//连接池queryRunner对象
+        String sql="update sys_goods set name=?,make=?,makeTime=?,size=?,buyprice=?,sellprice=?,count=?,type_id=? where id=?";
+        try {
+            queryRunner.update(sql,entity.getName(),entity.getMake(),entity.getMaketime(),entity.getSize(),entity.getBuyprice(),entity.getSellprice(),entity.getCount(),entity.getTypeId(),entity.getId());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override

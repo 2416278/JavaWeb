@@ -98,6 +98,16 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label">商品类别</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b" name="typeId">
+                                    <c:forEach items="${types}" var="type" >
+                                        <option value="${type.id}"}>${type.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <input type="hidden" name="img" id="imgName">
                             <label class="col-sm-3 control-label">图片：</label>
                             <div class="col=sm-8">

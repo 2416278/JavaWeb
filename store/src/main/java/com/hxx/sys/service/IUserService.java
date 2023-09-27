@@ -14,7 +14,7 @@ public interface IUserService {
 
     public SysUser findByName(String usename);
 
-    public int updateById(SysUser entity);
+    public int update(SysUser entity);
 
     public int deleteById(int id);
 

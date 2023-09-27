@@ -6,8 +6,10 @@ import com.hxx.sys.bean.SysRoleMenu;
 import com.hxx.sys.bean.SysUser;
 import com.hxx.sys.service.IMenuService;
 import com.hxx.sys.service.IRoleService;
+import com.hxx.sys.service.IUserService;
 import com.hxx.sys.service.impl.IMenuServiceImpl;
 import com.hxx.sys.service.impl.IRoleServiceImpl;
+import com.hxx.sys.service.impl.IUserServiceImpl;
 import com.hxx.sys.utils.Constant;
 import com.hxx.sys.utils.StringUtils;
 
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 public class RoleServlet extends BaseServlet{
 
     private IRoleService service=new IRoleServiceImpl();
+    private IUserService userService=new IUserServiceImpl();
     private IMenuService menuService=new IMenuServiceImpl();
     public void list(HttpServletRequest req, HttpServletResponse resp)throws Exception {
         super.list(req,resp);//调用父类中方法完成分页数据的处理
@@ -73,43 +76,35 @@ public class RoleServlet extends BaseServlet{
         //获取提交的数据
         //添加数据
         //获取客户端提交的数据表单
+
         String id=req.getParameter("id");
         String name=req.getParameter("name");
-        String notes=req.getParameter("notes");
+        SysRole role=service.findById(Integer.parseInt(id));
         String password=req.getParameter("password");
-        String date=req.getParameter("createTime");
-        Date time = java.sql.Date.valueOf(date);
 
         SysRole entity=new SysRole();
-        //entity.setId(id);
-        entity.setName(name);
-        entity.setNotes(notes);
-        entity.setPassword(password);
-        entity.setCreateTime(time);
 
-        //System.out.println("添加成功");
+        entity.setName(name);
+        entity.setPassword(password);
+        entity.setNotes(role.getNotes());
+
         String[] menuIds = req.getParameterValues("menuId");
         int roleId=Integer.parseInt(id);
-        if(StringUtils.isNotEmpty(id)){
-            //表示是修改密码或者重置密码
-            entity.setId(Integer.parseInt(id));
-            //调用更新方法
-            service.updateById(entity);
-            //更新分配的菜单
-            //1.删除当前角色已分配的菜单
-            service.deleteMenuByRoleId(Integer.parseInt(id));
-            //2.插入新分配的菜单
-            if(menuIds !=null&& menuIds.length>0){
-                for (String menuId : menuIds) {
-                    service.saveDispatchMenu(roleId,menuId);
-                }
+        //表示是修改密码或者重置密码
+        entity.setId(Integer.parseInt(id));
+        //调用更新方法
+        service.updateById(entity);
+        //如果修改了级别同样用户管理也要修改
+
+        //更新分配的菜单
+        //1.删除当前角色已分配的菜单
+        service.deleteMenuByRoleId(Integer.parseInt(id));
+        //2.插入新分配的菜单
+        if(menuIds !=null&& menuIds.length>0){
+            for (String menuId : menuIds) {
+                service.saveDispatchMenu(roleId,menuId);
             }
-
-        }else{
-            //表示添加操作
-            service.save(entity);
         }
-
         //保存数据，调用Service方法实现数据的存储
         //重定向的查询操作
         resp.sendRedirect("/sys/roleServlet?action=list");
@@ -135,15 +130,6 @@ public class RoleServlet extends BaseServlet{
 
     }
 
-    @Override
-    public void findByName(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
-
-    @Override
-    public void check(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
 
 
 }

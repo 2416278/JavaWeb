@@ -11,17 +11,21 @@ import java.time.LocalDate;
 @Data
 public class SysUser {
     private Integer uid;
-    private Integer roleId;
-    private String usename;
-    private String password;
-    private String salt;
-    private String grade;
-    private String phone;
-    private String email;
-    private Integer isDelete;
-    private double total;
-    private Integer num;
-    private Date createTime;
 
+    private Integer roleId;
+
+    private String usename;
+
+    private String password;
+
+    private String grade;
+
+    private String phone;
+
+    private String email;
+
+    private double total;
+
+    private Date createTime;
 
 }

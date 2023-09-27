@@ -24,7 +24,7 @@ import java.util.Properties;
 import java.util.Random;
 
 @WebServlet(name="resetServlet",urlPatterns={"/sys/resetServlet"})
-public class resetServlet extends BaseServlet {
+public class ResetServlet extends BaseServlet {
 
     // 密码长度不少于8位且至少包含大写字母、小写字母、数字和特殊符号中的四种
     public static final String vaildPassword = "^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$";
@@ -63,25 +63,34 @@ public class resetServlet extends BaseServlet {
             //填写的邮箱有效
             if(!resetUser.getEmail().equals(email)){
                 HttpSession session = req.getSession();
+                if(StringUtils.isNotEmpty(name)){
+                    SysUser user=new SysUser();
+                    user.setUsename(name);
+                    //回显具体的信息
+                    req.setAttribute("entity",user);
+                }
                 session.setAttribute("msg","请输入注册使用的邮箱");
                 req.getRequestDispatcher("/sys/password/reset.jsp").forward(req,resp);
             }else{
                 //该邮箱是注册使用的邮箱
                 //更新数据库同时修改成功
                 Boolean flag=sendMail(email, "【校园购物系统】账号：" +name+ "随机密码为：" +password
-                        +"仅用于用户账号注册验证，请勿泄露和转发。如非本人操作，请忽略此短信。");//发送重置信息
+                        +"仅用于用户账号密码重置，请勿泄露和转发。如非本人操作，请忽略此短信。");//发送重置信息
                 SysRole sysRole=new SysRole();
                 sysRole.setName(name);
                 sysRole.setPassword(password);
                 service.updatePassword(sysRole);
                 HttpSession session = req.getSession();
-                session.setAttribute("msg","重置成功！！请重新登录");
+                session.setAttribute("msg","重置成功!!");
                 req.getRequestDispatcher("/sys/password/reset.jsp").forward(req,resp);
             }
         }else{
             //填写的邮箱无效
             HttpSession session = req.getSession();
             session.setAttribute("msg","该邮箱无效请重新输入");
+            SysUser user=new SysUser();
+            user.setUsename(name);
+            session.setAttribute("entity",user);
             req.getRequestDispatcher("/sys/password/reset.jsp").forward(req,resp);
         }
 
@@ -108,21 +117,25 @@ public class resetServlet extends BaseServlet {
                 if(isValid){
                     //填写的邮箱有效
                     if(!resetUser.getEmail().equals(email)){
+
                         HttpSession session = req.getSession();
                         session.setAttribute("msg1","请输入注册使用的邮箱");
-                        req.getRequestDispatcher("/sys/password/reset.jsp").forward(req,resp);
+                        req.getRequestDispatcher("/sys/password/forget.jsp").forward(req,resp);
                     }else{
                         //该邮箱是注册使用的邮箱
                         //更新数据库同时修改成功
                         Boolean flag=sendMail(email, "【校园购物系统】账号：" +name+ "随机密码为：" +password
-                                +"仅用于用户账号注册验证，请勿泄露和转发。如非本人操作，请忽略此短信。");//发送重置信息
+                                +"仅用于用户账号密码重置，请勿泄露和转发。如非本人操作，请忽略此邮件。");//发送重置信息
                         SysRole sysRole=new SysRole();
                         sysRole.setName(name);
                         sysRole.setPassword(password);
                         service.updatePassword(sysRole);
                         HttpSession session = req.getSession();
-                        session.setAttribute("msg","重置成功！！请重新登录");
+                        session.setAttribute("msg","已发送密码！！请登录");
                         req.getRequestDispatcher("/login.jsp").forward(req,resp);
+                        session.invalidate();//注销
+
+
                     }
                 }else{
                     //填写的邮箱无效
@@ -151,15 +164,6 @@ public class resetServlet extends BaseServlet {
 
     }
 
-    @Override
-    public void findByName(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
-
-    @Override
-    public void check(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
 
     /**
      *

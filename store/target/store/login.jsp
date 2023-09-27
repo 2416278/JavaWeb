@@ -33,11 +33,11 @@
 				<div class="m-b"></div>
 				<h4>欢迎使用 <strong>校园购物系统</strong></h4>
 				<ul class="m-b">
-					<li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势一</li>
-					<li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势二</li>
-					<li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势三</li>
-					<li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势四</li>
-					<li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势五</li>
+					<li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势一:种类丰富</li>
+					<li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势二:方便快捷</li>
+					<li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势三:个性服务</li>
+					<li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势四:正品保证</li>
+					<li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势五:售后服务</li>
 				</ul>
 				<strong>还没有账号？ <a href="/register.jsp">立即注册&raquo;</a></strong>
 			</div>

@@ -31,11 +31,7 @@
 
 <div class="middle-box text-center loginscreen   animated fadeInDown">
   <div>
-    <div>
 
-      <h2 class="logo-name" style="text-align: center; ">store</h2>
-
-    </div>
     <h3>欢迎注册校园购物系统</h3>
     <p>创建一个新账户</p>
     <form class="m-t" role="form" action="/sys/registerServlet" method="post">

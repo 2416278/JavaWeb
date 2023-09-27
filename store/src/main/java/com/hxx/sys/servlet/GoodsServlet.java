@@ -1,12 +1,12 @@
 package com.hxx.sys.servlet;
 
-import com.hxx.sys.bean.SysGoods;
-import com.hxx.sys.bean.SysRole;
-import com.hxx.sys.bean.SysUser;
+import com.hxx.sys.bean.*;
 import com.hxx.sys.service.IGoodsService;
+import com.hxx.sys.service.IGoodsTypeService;
 import com.hxx.sys.service.IRoleService;
 import com.hxx.sys.service.IUserService;
 import com.hxx.sys.service.impl.IGoodsServiceImpl;
+import com.hxx.sys.service.impl.IGoodsTypeServiceImpl;
 import com.hxx.sys.service.impl.IRoleServiceImpl;
 import com.hxx.sys.service.impl.IUserServiceImpl;
 import com.hxx.sys.utils.Constant;
@@ -31,7 +31,9 @@ import java.util.List;
 public class GoodsServlet extends BaseServlet{
     private IGoodsService service=new IGoodsServiceImpl();
 
-    private IRoleService roleService=new IRoleServiceImpl();
+    private IGoodsTypeService typeService=new IGoodsTypeServiceImpl();
+
+
 
     @Override
     public void list(HttpServletRequest req, HttpServletResponse resp)throws Exception {
@@ -46,11 +48,14 @@ public class GoodsServlet extends BaseServlet{
 
     @Override
     public void saveOrUpdatePage(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        //查询所有角色信息
-        List<SysRole> roles = roleService.list(null);
-        req.setAttribute("roles",roles);//传递
-
-
+        //查询所有商品类别信息
+       typeService.ListPage(pageUtils);
+       //获得每个类别名
+        List<SysGoodsType> types=null;
+        if(pageUtils.getList()!=null && pageUtils.getList().size()>0){
+             types= (List<SysGoodsType>) pageUtils.getList();
+        }
+        req.setAttribute("types",types);
 
         //需要进入添加或更新页面
         String id=req.getParameter("id");
@@ -82,29 +87,42 @@ public class GoodsServlet extends BaseServlet{
         String date=req.getParameter("maketime");
         Date maketime = java.sql.Date.valueOf(date);
         String img=req.getParameter("img");
+        String typeId=req.getParameter("typeId");
 
-        SysGoods user=new SysGoods();
+        SysGoods good=new SysGoods();
 
 
-        user.setName(name);
-        user.setMake(make);
-        user.setBuyprice(buyprice);
-        user.setSellprice(sellprice);
-        user.setSize(size);
-        user.setMaketime(maketime);
-        user.setCount(count);
-        user.setImg(img);
-        System.out.println("成功");
+        good.setName(name);
+        good.setMake(make);
+        good.setBuyprice(buyprice);
+        good.setSellprice(sellprice);
+        good.setSize(size);
+        good.setMaketime(maketime);
+        good.setCount(count);
+
+        good.setTypeId(Integer.parseInt(typeId));
+
 
         if(StringUtils.isNotEmpty(id)){
             //表示是更新操作
-            user.setId(Integer.parseInt(id));
-            //调用更新方法
-            service.updateById(user);
+            good.setId(Integer.parseInt(id));
+            if(StringUtils.isNotEmpty(img)){
+                //判断是否修改了商品图片
+                good.setImg(img);
+                //调用更新方法
+                service.update(good);
+
+            }else{
+                //不更新图片
+                service.updateNew(good);
+
+            }
+
 
         }else{
             //表示添加操作
-            service.save(user);
+            good.setImg(img);
+            service.save(good);
         }
 
         //保存数据，调用Service方法实现数据的存储
@@ -128,15 +146,6 @@ public class GoodsServlet extends BaseServlet{
 
     }
 
-    @Override
-    public void findByName(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
-
-    @Override
-    public void check(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
 
 
 }

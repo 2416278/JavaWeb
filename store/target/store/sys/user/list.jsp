@@ -53,8 +53,6 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-9 m-b-xs">
-                            <a href="/sys/userServlet?action=saveOrUpdatePage" class="btn btn-success " type="button"><i class="fa fa-plus"></i>&nbsp;添加</a>
-
                         </div>
                         <div class="col-sm-3">
                             <div class="input-group">
@@ -102,8 +100,7 @@
                                         <td>${entity.email}</td>
                                         <td>${entity.createTime}</td>
                                         <td>
-                                            <a href="/sys/userServlet?action=saveOrUpdatePage&id=${entity.uid}&name=${entity.usename}" class="btn btn-info" type="button"><i class="fa fa-edit"></i>&nbsp;修改</a>
-                                            <button  class="btn btn-danger" onclick="removeDate(${entity.uid})" type="button"><i class="fa fa-remove"></i>&nbsp;删除</button>
+                                          <button  class="btn btn-danger" onclick="removeDate(${entity.uid})" type="button"><i class="fa fa-remove"></i>&nbsp;删除</button>
                                         </td>
                                     </tr>
                                 </c:if>

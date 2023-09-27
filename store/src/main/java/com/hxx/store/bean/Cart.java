@@ -14,6 +14,7 @@ public class Cart extends BaseClass {
 
     private Integer isPay;
 
+    private String username;
 
 
 }

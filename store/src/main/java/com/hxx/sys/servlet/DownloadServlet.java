@@ -48,9 +48,6 @@ public class DownloadServlet extends HttpServlet {
         ServletOutputStream outputStream = resp.getOutputStream();
         outputStream.write(data);
         outputStream.flush();
-
-
-
     }
 
     @Override

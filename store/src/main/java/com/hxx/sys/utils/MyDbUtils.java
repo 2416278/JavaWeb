@@ -15,14 +15,12 @@ public class MyDbUtils {
     //数据源的初始化
     static{
         dataSource=new MysqlConnectionPoolDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/store?serverTimezone=UTC");
+
+        dataSource.setUrl("jdbc:mysql://localhost:3306/store?serverTimezone=GMT%2b8");
         dataSource.setUser("root");
         dataSource.setPassword("04082012");
     }
-
     public static QueryRunner getQueryRunner(){
         return new QueryRunner(dataSource);
-
     }
-
 }

@@ -45,88 +45,24 @@ public class UserServlet extends BaseServlet{
 
     @Override
     public void saveOrUpdatePage(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        //查询所有角色信息
-        List<SysRole> roles = roleService.list(null);
-        req.setAttribute("roles",roles);//传递
-
-
-
-        //需要进入添加或更新页面
-        String id=req.getParameter("id");
-        if(StringUtils.isNotEmpty(id)){
-            //说明是更新操作,需要回显具体的信息
-            SysUser user = service.findById(Integer.parseInt(id));
-            //entity实体
-            req.setAttribute("entity",user);
-        }
-        req.getRequestDispatcher("/sys/user/addOrUpdate.jsp").forward(req,resp);
     }
 
 
     @Override
     public void saveOrUpdate(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 
-        //验证是否存在该用户
-        String userName = req.getParameter("usename");
-        String s = service.checkUserName(userName);
-        if(userName.length()<5){
-            req.setAttribute("msg","用户名不少于5个字符");
-            req.getRequestDispatcher("/sys/user/addOrUpdate.jsp").forward(req,resp);
-        }else if(s.equals("error")){
-
-                req.setAttribute("msg","用户名已存在");
-            req.getRequestDispatcher("/sys/user/addOrUpdate.jsp").forward(req,resp);
-
-        }else{
-            //添加数据
-            //获取客户端提交的数据表单
-            String updateId=req.getParameter("id");
-
-            String usename=req.getParameter("usename");
-            String grade=req.getParameter("grade");
-            String tol=req.getParameter("total");
-            double total=Double.parseDouble(tol);
-            String phone=req.getParameter("phone");
-            String email=req.getParameter("email");
-            String date=req.getParameter("createTime");
-            Date createTime = java.sql.Date.valueOf(date);
-
-            SysUser user=new SysUser();
-
-
-            user.setUsename(usename);
-            user.setGrade(grade);
-            user.setTotal(total);
-            user.setPhone(phone);
-            user.setEmail(email);
-            user.setCreateTime(createTime);
-            System.out.println("添加成功");
-
-            if(StringUtils.isNotEmpty(updateId)){
-                //表示是更新操作
-                user.setUid(Integer.parseInt(updateId));
-                //调用更新方法
-                service.updateById(user);
-
-            }else{
-                //表示添加操作
-                service.save(user);
-            }
-
-            //保存数据，调用Service方法实现数据的存储
-            //重定向的查询操作
-            resp.sendRedirect("/sys/userServlet?action="+ Constant.BASE_ACTION_LIST);
-
-
-        }
-
-
     }
 
     @Override
     public void remove(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+
         String id = req.getParameter("id");
+        Integer uid=Integer.parseInt(id);
+        SysUser user=service.findById(uid);
+        String name=user.getUsename();
+        roleService.deleteByName(name);
         int count=service.deleteById(Integer.parseInt(id));
+        roleService.deleteById(Integer.parseInt(id));
         PrintWriter writer = resp.getWriter();
         writer.write(count+"");
         writer.flush();
@@ -137,18 +73,5 @@ public class UserServlet extends BaseServlet{
     public void findById(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 
     }
-
-    @Override
-    public void findByName(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
-
-    @Override
-    public void check(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-
-
-    }
-
 
 }

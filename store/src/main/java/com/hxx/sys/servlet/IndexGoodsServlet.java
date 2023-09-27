@@ -86,13 +86,4 @@ public class IndexGoodsServlet extends BaseServlet {
 
     }
 
-    @Override
-    public void findByName(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
-
-    @Override
-    public void check(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
 }

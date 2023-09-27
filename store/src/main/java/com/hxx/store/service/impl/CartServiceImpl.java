@@ -4,6 +4,7 @@ import com.hxx.store.bean.Cart;
 import com.hxx.store.dao.CartDao;
 import com.hxx.store.dao.impl.CartDaoImpl;
 import com.hxx.store.service.CartService;
+import com.hxx.sys.bean.SysRole;
 import com.hxx.sys.utils.PageUtils;
 
 import java.util.List;
@@ -17,9 +18,9 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void ListPage(PageUtils pageUtils) {
-        List<Cart> carts = dao.ListPage(pageUtils);
-        int count = dao.count(pageUtils);
+    public void ListPage(PageUtils pageUtils, SysRole user) {
+        List<Cart> carts = dao.ListPage(pageUtils,user);
+        int count = dao.count(pageUtils,user);
         pageUtils.setList(carts);
         pageUtils.setTotalCount(count);
 
@@ -27,8 +28,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public int count(PageUtils pageUtils) {
-        return dao.count(pageUtils);
+    public int count(PageUtils pageUtils,SysRole user) {
+        return dao.count(pageUtils,user);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart updateAmount(String id, String amount) {
+    public Cart updateAmount(Integer id, String amount) {
          dao.updateAmount(id,amount);
         return null;
     }
@@ -73,13 +74,23 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void saveAmountByName(Integer amount,String name) {
-        dao.saveAmountByName(amount,name);
+    public void saveStateById(int id) {
+        dao.saveStateById(id);
     }
 
     @Override
-    public Cart findNotPayByName(String name) {
-        return dao.findNotPayByName(name);
+    public void saveAmountByName(Integer amount,String name,String username) {
+        dao.saveAmountByName(amount,name,username);
+    }
+
+    @Override
+    public Cart findNotPayByName(String name,String username) {
+        return dao.findNotPayByName(name,username);
+    }
+
+    @Override
+    public void saveUserName(String userName, String name) {
+        dao.saveUserName(userName,name);
     }
 
 

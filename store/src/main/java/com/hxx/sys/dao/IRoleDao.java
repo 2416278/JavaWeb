@@ -36,11 +36,13 @@ public interface IRoleDao {
 
     public List<SysRoleMenu> queryByRoleId(int roleId);
 
-     public void addCount(SysRole sysRole);
+     public void addCount(String name);
 
     void delCount(SysRole sysRole);
 
     void lock(SysRole sysRole);
 
     void unLock(SysRole sysRole);
+
+    void deleteByNmae(String name);
 }

@@ -167,7 +167,7 @@ public class IMenuDaoImpl implements IMenuDao {
     }
 
     @Override
-    public int updateById(SysMenu entity) {
+    public int update(SysMenu entity) {
         QueryRunner queryRunner= MyDbUtils.getQueryRunner();
         String sql="update sys_menu set name= ?,url=?,parent_id=?,seq=? where id=?";
         try {

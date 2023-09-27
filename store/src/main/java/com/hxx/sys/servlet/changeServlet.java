@@ -1,4 +1,7 @@
 package com.hxx.sys.servlet;
+/**
+ * 处理修改密码
+ */
 
 import com.hxx.sys.bean.SysUser;
 import com.hxx.sys.service.IRoleService;
@@ -33,7 +36,7 @@ import java.util.Properties;
 import java.util.Random;
 
 @WebServlet(name="changeServlet",urlPatterns={"/sys/changeServlet"})
-public class changeServlet extends BaseServlet{
+public class ChangeServlet extends BaseServlet{
 
     // 密码长度不少于8位且至少包含大写字母、小写字母、数字和特殊符号中的四种
     public static final String vaildPassword = "^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$";
@@ -58,16 +61,17 @@ public class changeServlet extends BaseServlet{
         String name=req.getParameter("name");
         String password=req.getParameter("password");
         HttpSession session = req.getSession();
-
+        SysRole user=service.findByName(name);
         if(password.matches(vaildPassword)){
             SysRole sysRole=new SysRole();
             sysRole.setName(name);
             sysRole.setPassword(password);
             service.updatePassword(sysRole);
             session.setAttribute("msg","修改密码成功");
-            req.getRequestDispatcher("/sys/password/change.jsp").forward(req,resp);
+            resp.sendRedirect("/sys/password/change.jsp");
         }else{
             session.setAttribute("msg","密码格式不符合要求！！请重新输入");
+            req.setAttribute("entity",user);
             req.getRequestDispatcher("/sys/password/change.jsp").forward(req,resp);
         }
 
@@ -83,13 +87,4 @@ public class changeServlet extends BaseServlet{
 
     }
 
-    @Override
-    public void findByName(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
-
-    @Override
-    public void check(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
 }

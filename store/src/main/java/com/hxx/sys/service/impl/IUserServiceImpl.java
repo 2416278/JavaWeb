@@ -40,8 +40,8 @@ public class IUserServiceImpl implements IUserService {
     }
 
     @Override
-    public int updateById(SysUser user) {
-        return dao.updateById(user);
+    public int update(SysUser user) {
+        return dao.update(user);
     }
 
     @Override

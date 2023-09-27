@@ -39,7 +39,6 @@ public class AuthenticationFilter implements Filter {
             //在没有登录的情况下可以访问的资源：登陆页面 处理登录逻辑的servlet，以及静态页面
             //放过请求
             filterChain.doFilter(servletRequest,servletResponse);
-
         }else{
             //访问的是需要登录的状态才能访问资源
             HttpSession session=request.getSession();
@@ -51,9 +50,7 @@ public class AuthenticationFilter implements Filter {
                 //不是登陆状态跳转到登录页面
                 request.setAttribute("msg","请先登录！！！");
                 request.getRequestDispatcher("/login.jsp").forward(request,response);
-
             }
-
         }
 
 

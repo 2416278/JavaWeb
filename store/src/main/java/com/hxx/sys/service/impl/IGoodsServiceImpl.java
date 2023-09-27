@@ -54,8 +54,13 @@ public class IGoodsServiceImpl implements IGoodsService {
     }
 
     @Override
-    public int updateById(SysGoods entity) {
-        return dao.updateById(entity);
+    public void updateNew(SysGoods good) {
+       dao.updateNew(good);
+    }
+
+    @Override
+    public int update(SysGoods entity) {
+        return dao.update(entity);
     }
 
     @Override

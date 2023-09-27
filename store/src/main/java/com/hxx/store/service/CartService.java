@@ -11,9 +11,9 @@ public interface CartService  {
 
     public List<Cart> list(Cart entity);
 
-    public void ListPage(PageUtils pageUtils);
+    public void ListPage(PageUtils pageUtils,SysRole user);
 
-    public int count(PageUtils pageUtils);
+    public int count(PageUtils pageUtils,SysRole user);
 
     public int save(Cart entity);
 
@@ -28,13 +28,16 @@ public interface CartService  {
     public int deleteByName(String Name);
 
 
-    Cart updateAmount(String id, String amount);
+    Cart updateAmount(Integer id, String amount);
 
     void saveStateByName(String name);
 
-    void saveAmountByName(Integer amount,String name);
+    void saveStateById(int id);
 
-    Cart findNotPayByName(String name);
+    void saveAmountByName(Integer amount,String name,String username);
+
+    Cart findNotPayByName(String name,String username);
 
 
+    void saveUserName(String userName, String name);
 }

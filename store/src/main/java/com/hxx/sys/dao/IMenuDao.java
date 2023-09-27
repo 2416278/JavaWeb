@@ -18,7 +18,7 @@ public interface IMenuDao {
 
     public SysMenu findByName(String usename);
 
-    public int updateById(SysMenu entity);
+    public int update(SysMenu entity);
 
     int deleteById(int id);
 

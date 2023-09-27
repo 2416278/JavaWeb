@@ -71,7 +71,6 @@ public abstract class BaseServlet extends HttpServlet {
     public abstract void saveOrUpdate(HttpServletRequest req, HttpServletResponse resp) throws Exception;
     public abstract void remove(HttpServletRequest req, HttpServletResponse resp) throws Exception;
     public abstract void findById(HttpServletRequest req, HttpServletResponse resp) throws Exception;
-    public abstract void findByName(HttpServletRequest req, HttpServletResponse resp) throws Exception;
-    public abstract void check(HttpServletRequest req, HttpServletResponse resp) throws Exception;
+
 
 }

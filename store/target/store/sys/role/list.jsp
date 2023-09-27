@@ -49,11 +49,20 @@
                         </a>
                     </div>
                 </div>
+                <%
+                    String mess=(String)session.getAttribute("msg");  //接收后台传来的message
+                    if(mess!=null&&!mess.equals("")){  //判断message
+                %>
+                <script type="text/javascript">
+                    alert("<%=mess%>");  //弹出警示框
+                </script>
+                <%
+                        session.setAttribute("msg","");  //将message值设为空，否则将一直弹出。
+                    }
+                %>
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-9 m-b-xs">
-                            <a href="/sys/roleServlet?action=saveOrUpdatePage" class="btn btn-success " type="button"><i class="fa fa-plus"></i>&nbsp;添加</a>
-
                         </div>
                         <div class="col-sm-3">
                             <div class="input-group">
@@ -107,7 +116,6 @@
                                     <td>${entity.createTime}</td>
                                     <td>
                                         <a href="/sys/roleServlet?action=saveOrUpdatePage&id=${entity.id}&name=${entity.name}" class="btn btn-info " type="button"><i class="fa fa-edit"></i>&nbsp;更新</a>
-                                        <button class="btn btn-danger" onclick="removeDate(${entity.id})" type="button"><i class="fa fa-remove"></i>&nbsp;删除</button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -136,36 +144,6 @@
             radioClass:"iradio_square-green",
         });
     });
-
-    function removeDate(id){
-        swal({
-            title: "您确定要删除这条信息吗",
-            text: "删除后将无法恢复，请谨慎操作！",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "删除",
-            closeOnConfirm: false
-        }, function () {
-            swal("删除成功！", "您已经永久删除了这条信息。", "success");
-            $.get("/sys/roleServlet?action=remove&id="+id,function(msg){
-                if(msg=="ok"){
-                    //删除成功
-                    window.location.href="/sys/roleServlet?action=list";
-                }
-                else{
-                    //表示不能删除
-                    swal({
-                        title: "删除失败！",
-                        text: "该用户已被分配不能删除",
-                        icon: "success",
-                    });
-                }
-
-
-            })
-        });
-    }
 
 </script>
 <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>

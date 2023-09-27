@@ -41,6 +41,8 @@ public class CartDaoImpl implements CartDao {
                             entity.setPrice(resultSet.getDouble("price"));
                             entity.setAmount(resultSet.getInt("amount"));
                             entity.setIsPay(resultSet.getInt("isPay"));
+                            entity.setUsername(resultSet.getString("username"));
+
                             list.add(entity);
                         }
                     }
@@ -56,13 +58,19 @@ public class CartDaoImpl implements CartDao {
 
 
     @Override
-    public List<Cart> ListPage(PageUtils pageUtils) {
+    public List<Cart> ListPage(PageUtils pageUtils,SysRole user) {
         QueryRunner queryRunner= MyDbUtils.getQueryRunner();
-        String sql = "select * from cart where isPay=0";
+        String sql = "select * from cart where 1=1";
         if(StringUtils.isNotEmpty(pageUtils.getKey())){
             // 需要带条件查询
             sql+= " and name like '%"+pageUtils.getKey()+"%' ";
         }
+        if(user!=null){
+            //不是管理员拼接用户名
+            sql+=" and username= '"+user.getName()+"'";
+
+        }
+        sql+=" and isPay= 0";
         sql+=" limit ?,? ";
         //计算 分页开始的页数
         int startNo=pageUtils.getStart();
@@ -79,7 +87,8 @@ public class CartDaoImpl implements CartDao {
                         entity.setPrice(resultSet.getDouble("price"));
                         entity.setAmount(resultSet.getInt("amount"));
                         entity.setIsPay(resultSet.getInt("isPay"));
-                         list.add(entity);
+                        entity.setUsername(resultSet.getString("username"));
+                        list.add(entity);
                     }
                     return list;
                 }
@@ -96,9 +105,9 @@ public class CartDaoImpl implements CartDao {
     @Override
     public int save(Cart entity) {
         QueryRunner queryRunner=MyDbUtils.getQueryRunner();//连接池queryRunner对象
-        String sql="insert into cart(img,name,price,amount)values(?,?,?,?)";
+        String sql="insert into cart(img,name,price,amount,username)values(?,?,?,?,?)";
         try {
-            return queryRunner.update(sql,entity.getImg(),entity.getName(),entity.getPrice(),entity.getAmount());
+            return queryRunner.update(sql,entity.getImg(),entity.getName(),entity.getPrice(),entity.getAmount(),entity.getUsername());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -122,6 +131,7 @@ public class CartDaoImpl implements CartDao {
                         entity.setPrice(resultSet.getDouble("price"));
                         entity.setAmount(resultSet.getInt("amount"));
                         entity.setIsPay(resultSet.getInt("isPay"));
+                        entity.setUsername(resultSet.getString("username"));
                         return entity;
                     }
                     return null;
@@ -149,13 +159,18 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
-    public int count(PageUtils pageUtils) {
+    public int count(PageUtils pageUtils,SysRole user) {
         QueryRunner queryRunner=MyDbUtils.getQueryRunner();
-        String sql="select count(1) from cart where isPay=0";
+        String sql="select count(1) from cart where 1=1";
         if(StringUtils.isNotEmpty(pageUtils.getKey())){
             // 需要带条件查询
-            sql+= " and goodsName like '%"+pageUtils.getKey()+"%' ";
+            sql+= " and name like '%"+pageUtils.getKey()+"%' ";
         }
+
+        sql+= " and isPay=0 ";
+        sql+= " and username= '"+user.getName()+"'";
+
+
         try {
             return queryRunner.query(sql,new ResultSetHandler<Integer>(){
 
@@ -196,11 +211,11 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
-    public void updateAmount(String name, String amount) {
+    public void updateAmount(Integer id, String amount) {
         QueryRunner queryRunner=MyDbUtils.getQueryRunner();//连接池queryRunner对象
-        String sql="update cart set amount=? where name=?";
+        String sql="update cart set amount=? where id=?";
         try {
-            queryRunner.update(sql,amount,name);
+            queryRunner.update(sql,amount,id);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -222,6 +237,7 @@ public class CartDaoImpl implements CartDao {
                         entity.setPrice(resultSet.getDouble("price"));
                         entity.setAmount(resultSet.getInt("amount"));
                         entity.setIsPay(resultSet.getInt("isPay"));
+                        entity.setUsername(resultSet.getString("username"));
                         return entity;
                     }
                     return null;
@@ -247,20 +263,45 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
-    public void saveAmountByName(Integer amount, String name) {
+    public void saveAmountByName(Integer amount, String name,String username) {
         QueryRunner queryRunner = MyDbUtils.getQueryRunner(); // 连接池queryRunner对象
         String sql = "update cart set amount = amount + ? where name = ?";
+        sql+="and username = ?";
         try {
-            queryRunner.update(sql, amount, name);
+            queryRunner.update(sql, amount, name,username);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
     @Override
-    public Cart findNotPayByName(String name) {
+    public void saveUserName(String userName, String name) {
+        QueryRunner queryRunner = MyDbUtils.getQueryRunner(); // 连接池queryRunner对象
+        String sql = "update cart set username= ? where name = ?";
+        try {
+            queryRunner.update(sql, userName, name);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+
+
+    @Override
+    public void saveStateById(int id) {
+        QueryRunner queryRunner=MyDbUtils.getQueryRunner();//连接池queryRunner对象
+        String sql="update cart set isPay=? where id=?";
+        try {
+            queryRunner.update(sql,1,id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    @Override
+    public Cart findNotPayByName(String name,String username) {
         QueryRunner queryRunner = MyDbUtils.getQueryRunner();
-        String sql = "select * from cart where name = ? and isPay = 0";
+        String sql = "select * from cart where name = ? and isPay = 0 and username = ?";
         try {
             return queryRunner.query(sql, new ResultSetHandler<Cart>() {
                 @Override
@@ -273,11 +314,12 @@ public class CartDaoImpl implements CartDao {
                         entity.setPrice(resultSet.getDouble("price"));
                         entity.setAmount(resultSet.getInt("amount"));
                         entity.setIsPay(resultSet.getInt("isPay"));
+                        entity.setUsername(resultSet.getString("username"));
                         return entity;
                     }
                     return null;
                 }
-            }, name);
+            }, name,username);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -285,5 +327,6 @@ public class CartDaoImpl implements CartDao {
 
         return null;
     }
+
 
 }

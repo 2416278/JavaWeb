@@ -196,7 +196,7 @@ public class IUserDaoImpl implements IUserDao {
     }
 
     @Override
-    public int updateById(SysUser user) {
+    public int update(SysUser user) {
         QueryRunner queryRunner=MyDbUtils.getQueryRunner();//queryRunner对象
         String sql="update sys_user set usename=?,grade=?,create_time=?,total=?,phone=?,email=? where uid=?";
         try {
@@ -244,16 +244,4 @@ public class IUserDaoImpl implements IUserDao {
         return 0;
     }
 
-
-    public static void main(String[]args){
-        IUserDao dao=new IUserDaoImpl();
-        PageUtils pageUtils=new PageUtils();
-        pageUtils.setPageNum(2);
-        pageUtils.setPageSize(2);
-        List<SysUser> List=dao.ListPage(pageUtils);
-        for(SysUser sysuser:List){
-            System.out.println(sysuser);
-        }
-
-    }
 }

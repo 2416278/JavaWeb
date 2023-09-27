@@ -18,9 +18,7 @@ public class EncodingFilter implements Filter {
         req.setCharacterEncoding("utf-8"); // 设置编码方式为utf-8
         chain.doFilter(req,res); // 放过请求
     }
-
     @Override
     public void destroy() {
-
     }
 }

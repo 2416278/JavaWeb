@@ -12,7 +12,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用户管理</title>
+    <title>订单管理</title>
     <link rel="shortcut icon" href="favicon.ico"> <link href="/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
     <link href="/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
     <link href="/css/plugins/iCheck/custom.css" rel="stylesheet">
@@ -31,7 +31,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>用户管理</h5>
+                    <h5>订单管理</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -39,12 +39,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
                             <i class="fa fa-wrench"></i>
                         </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="table_basic.html#">选项1</a>
-                            </li>
-                            <li><a href="table_basic.html#">选项2</a>
-                            </li>
-                        </ul>
+
                         <a class="close-link">
                             <i class="fa fa-times"></i>
                         </a>
@@ -53,9 +48,6 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-9 m-b-xs">
-                            <c:if test="${sessionScope.loginUser.isAdmin}">
-                                <a href="/store/orderServlet?action=saveOrUpdatePage" class="btn btn-success " type="button"><i class="fa fa-plus"></i>&nbsp;添加</a>
-                            </c:if>
                         </div>
                         <div class="col-sm-3">
                             <div class="input-group">
@@ -83,27 +75,17 @@
                                 <th>总价</th>
                                 <th>数量</th>
                                 <th>购买时间</th>
-                                <c:if test="${sessionScope.loginUser.isAdmin}"><th>操作</th></c:if>
                             </tr>
                             </thead>
                             <tbody>
                             <c:forEach items="${requestScope.pageUtils.list}" var="entity">
-
                                     <tr>
-
                                         <td>${entity.id}</td>
                                         <td><img src="/sys/downloadServlet?fileName=${entity.img}" style="width:60px;height:60px;"></td>
                                         <td>${entity.goodsName}</td>
                                         <td>${entity.total}</td>
                                         <td>${entity.amount}</td>
                                         <td>${entity.time}</td>
-                                        <c:if test="${sessionScope.loginUser.isAdmin}">
-                                            <td>
-                                                <a href="/store/orderServlet?action=saveOrUpdatePage&id=${entity.id}" class="btn btn-info" type="button"><i class="fa fa-edit"></i>&nbsp;修改</a>
-                                                <button  class="btn btn-danger" onclick="removeDate(${entity.id})" type="button"><i class="fa fa-remove"></i>&nbsp;删除</button>
-                                            </td>
-                                        </c:if>
-
                                     </tr>
 
                             </c:forEach>

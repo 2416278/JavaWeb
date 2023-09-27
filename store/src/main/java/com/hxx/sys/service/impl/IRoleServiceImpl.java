@@ -107,8 +107,8 @@ public class IRoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public void addCount(SysRole sysRole) {
-        dao.addCount(sysRole);
+    public void addCount(String name) {
+        dao.addCount(name);
     }
 
     @Override
@@ -124,6 +124,11 @@ public class IRoleServiceImpl implements IRoleService {
     @Override
     public void unLock(SysRole sysRole) {
         dao.unLock(sysRole);
+    }
+
+    @Override
+    public void deleteByName(String name) {
+         dao.deleteByNmae(name);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.hxx.store.servlet;
 
+import com.google.protobuf.TextFormatParseInfoTree;
 import com.hxx.store.bean.Cart;
 import com.hxx.store.bean.Order;
 import com.hxx.store.service.CartService;
@@ -20,8 +21,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import static java.lang.System.exit;
+
 @WebServlet(name="orderServlet",urlPatterns = {"/store/orderServlet"})
-public class orderServlet extends BaseServlet {
+public class OrderServlet extends BaseServlet {
 
     private  IGoodsService goodsService=new IGoodsServiceImpl();
 
@@ -77,8 +80,6 @@ public class orderServlet extends BaseServlet {
     public void saveByName(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String name=req.getParameter("name");//获取商品的名称
 
-        //获取商品名称，商品数量信息
-        Cart cart=cartService.findNotPayByName(name);
 
         Order order=new Order();
 
@@ -91,20 +92,25 @@ public class orderServlet extends BaseServlet {
             user=(SysRole) obj;
             userName= user.getName();
         }
+        //获取商品名称，商品数量信息
+        Cart cart=cartService.findNotPayByName(name,userName);
+        if(cart==null){
+            return;
+        }else{
+            //添加到订单数据库
+            order.setImg(cart.getImg());
+            order.setGoodsName(cart.getName());
+            order.setTotal(cart.getPrice()*cart.getAmount());
+            order.setAmount(cart.getAmount());
+            order.setName(userName);
+            orderService.saveName(order);
+        }
 
 
-
-        //添加到订单数据库
-        order.setImg(cart.getImg());
-        order.setGoodsName(cart.getName());
-        order.setTotal(cart.getPrice()*cart.getAmount());
-        order.setAmount(cart.getAmount());
-        order.setName(userName);
-
-        orderService.saveName(order);
         //保存数据，调用Service方法实现数据的存储
         //重定向的查询操作
-
+        //修改该商品的支付状态
+        cartService.saveStateById(cart.getId());
         //修改库存量
         SysGoods good=goodsService.findByName(cart.getName());
 
@@ -123,14 +129,5 @@ public class orderServlet extends BaseServlet {
 
     }
 
-    @Override
-    public void findByName(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
-
-    @Override
-    public void check(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-    }
 
 }

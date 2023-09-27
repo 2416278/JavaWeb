@@ -13,7 +13,7 @@ public interface IMenuService {
 
     public SysMenu findById(int id);
 
-    public int updateById(SysMenu entity);
+    public int update(SysMenu entity);
 
     public int deleteById(int id);
 

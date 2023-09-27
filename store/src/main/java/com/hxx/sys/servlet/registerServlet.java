@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 @WebServlet(name="registerServlet",urlPatterns={"/sys/registerServlet"})
-public class registerServlet extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
 
     // 密码长度不少于8位且至少包含大写字母、小写字母、数字和特殊符号中的四种
     public static final String vaildPassword = "^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$";
@@ -72,6 +72,7 @@ public class registerServlet extends HttpServlet {
                     role.setPassword(password);
                     userService.save(user);
                     service.save(role);
+                    req.setAttribute("msg","注册成功，请登录！");
                     req.getRequestDispatcher("/login.jsp").forward(req,resp);
                 }
             }
@@ -139,7 +140,7 @@ public class registerServlet extends HttpServlet {
             message.setRecipient(Message.RecipientType.TO, toAddress);
 
             // 设置邮件标题
-            message.setSubject("重置密码");
+            message.setSubject("邮箱验证");
 
             // 设置邮件的内容体
             message.setContent(codenews, "text/html;charset=UTF-8");

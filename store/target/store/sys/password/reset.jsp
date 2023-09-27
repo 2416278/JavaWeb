@@ -114,7 +114,7 @@
 
 
     function resetPage(){
-        window.location.href="/main.jsp";//跳转到列表
+        window.location.href="/home.jsp";//跳转到列表
     }
 </script>
 
